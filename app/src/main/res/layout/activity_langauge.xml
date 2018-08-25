@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#001F3B"
+    tools:context=".LangaugeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:orientation="vertical"
+            android:background="@drawable/bak3"
+
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                app:srcCompat="@drawable/a_2_1" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:orientation="vertical"
+            android:background="#1C3C58"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/a_2_5">
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/darma"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView4"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--app:srcCompat="@drawable/a_2_3"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_marginLeft="40dp"/>-->
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:orientation="vertical"
+            android:background="#1C3C58"
+            ></LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_alignBottom="@+id/select_lan"
+        android:layout_marginBottom="114dp"
+        android:background="#001F3B"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="زبـان مـورد نظـر را انتخـاب کنيـد"
+            android:textColor="#B3B3B3"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:text="The language you want"
+            android:textColor="#51A8B1"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/select_lan"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:background="#001F3B"
+        android:gravity="center">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button"
+            android:onClick="onclik"
+            android:text="فارســي"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+
+            />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
+            android:onClick="pashti"
+            android:text="پشتــي"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+</RelativeLayout>

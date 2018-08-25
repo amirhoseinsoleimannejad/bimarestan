@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_map"
+    tools:context=".Detail_darogeramActivity" >
+
+
+
+    <LinearLayout
+        android:id="@+id/image_logo_top_map"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/top_map_color"
+        android:orientation="vertical"
+        android:layout_height="250dp">
+
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_top_detail" />
+
+
+    </LinearLayout>
+
+
+
+
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/image_logo_top_map"
+        android:name="com.example.jalil.bimarstan.Detail_darogeramActivity"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/detail_description"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/name"
+            android:background="@color/color1"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:text="نام داروخانه"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/mobile1"
+            android:background="@color/color1"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:text="09369896983"
+            android:gravity="center"
+
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/mobile2"
+            android:background="@color/color1"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:text="09369896983"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/address"
+            android:background="@color/color1"
+            android:layout_width="match_parent"
+            android:padding="5dp"
+            android:gravity="center"
+
+            android:text="تهران خیابان جردن"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
