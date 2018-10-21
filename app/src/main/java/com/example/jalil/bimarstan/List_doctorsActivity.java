@@ -1,3 +1,4 @@
+
 package com.example.jalil.bimarstan;
 
 import android.content.Context;
@@ -7,12 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-
-import com.example.jalil.bimarstan.otherclass.MessageAdapter;
-import com.example.jalil.bimarstan.otherclass.VisitorAdapter;
-import com.example.jalil.bimarstan.otherclass.message;
-import com.example.jalil.bimarstan.otherclass.visitor;
-
+import com.example.jalil.bimarstan.otherclass.DragestorAdapter;
+import com.example.jalil.bimarstan.otherclass.dragestor;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -23,41 +20,42 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class VisitorActivity extends AppCompatActivity {
 
 
-    public ListView lv_visitor;
-    public List<visitor> listvisitor;
-    public VisitorAdapter visitoradapter;
+
+public class List_doctorsActivity extends AppCompatActivity {
+
+
+    public ListView lv_doctors;
+    public List<dragestor> listdoctors;
+    public DragestorAdapter doctorsadapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visitor);
+        setContentView(R.layout.activity_list_doctors);
+
 
         G.activity=this;
 
-        lv_visitor=(ListView)findViewById(R.id.list_visitor);
-        listvisitor=new ArrayList<visitor>();
 
-        visitoradapter = new VisitorAdapter(G.activity,listvisitor);
-        lv_visitor.setAdapter(visitoradapter);
+
+        lv_doctors=(ListView)findViewById(R.id.list_visitor);
+        listdoctors=new ArrayList<dragestor>();
+
+        doctorsadapter = new DragestorAdapter(G.activity,listdoctors);
+        lv_doctors.setAdapter(doctorsadapter);
 
 
         HttpPostAsyncTask task = new HttpPostAsyncTask();
-        task.execute(G.urlserver + "list_visitor");
+        task.execute(G.urlserver + "list_doctor");
+        
+
     }
-
-
-
-
-
-
 
 
 
@@ -84,18 +82,12 @@ public class VisitorActivity extends AppCompatActivity {
             Log.i("22222222222222222", "22222222222222222222222222" + result);
 
 
-
-
-
-
             try {
 
 
                 JSONArray contacts;
                 JSONObject jsonObj = new JSONObject(result);
-                contacts = jsonObj.getJSONArray("visitor");
-
-
+                contacts = jsonObj.getJSONArray("list_advertise");
 
 
                 int k=contacts.length();
@@ -103,17 +95,21 @@ public class VisitorActivity extends AppCompatActivity {
 
                     JSONObject c = contacts.getJSONObject(i);
                     String id = c.getString("id");
-                    String name = c.getString("name");
-                    String image = c.getString("img");
+                    String address = c.getString("address");
+                    String lat = c.getString("lat");
+                    String lng = c.getString("lng");
+                    String mobile1 = c.getString("mobile1");
+                    String mobile2 = c.getString("mobile2");
+                    String description = c.getString("description");
 
-                    visitor v=new visitor(id,name,image);
-                    listvisitor.add(v);
+                    dragestor v=new dragestor(id,address,lat,lng,mobile1,mobile2,description);
+                    listdoctors.add(v);
                 }
 
 
 
-                visitoradapter = new VisitorAdapter(G.activity,listvisitor);
-                lv_visitor.setAdapter(visitoradapter);
+                doctorsadapter = new DragestorAdapter(G.activity,listdoctors);
+                lv_doctors.setAdapter(doctorsadapter);
 
             }
             catch (Exception e){

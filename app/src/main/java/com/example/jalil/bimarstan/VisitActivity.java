@@ -36,7 +36,7 @@ public class VisitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_turn);
+        setContentView(R.layout.activity_visit);
 
 
         index=0;
@@ -45,33 +45,11 @@ public class VisitActivity extends AppCompatActivity {
 
          listView = (ListView) findViewById(R.id.list_doctor);
 
-
-
         SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-
         String id_sick = sharedpreferences.getString(G.id_sick, "");
         new sendhttp(G.FetchListVisit+"?id_sick="+id_sick,"aaa",id_sick).execute();
 
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -81,15 +59,8 @@ public class VisitActivity extends AppCompatActivity {
         public String text;
         public String  data;
         public String urlstring;
-
         public String pass;
-
-
-
         public ProgressDialog progressDialog;
-
-
-
 
 
 
@@ -98,12 +69,7 @@ public class VisitActivity extends AppCompatActivity {
 
             this.data=data;
             this.urlstring=urlstring;
-
             this.pass=pass;
-
-
-
-
 
         }
 
@@ -137,8 +103,8 @@ public class VisitActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(message[1]);
                     contacts = jsonObj.getJSONArray("contacts");
 
-                    ListStringInteger = new StringAndIntegers[contacts.length()];
-                    TurnList=new String[contacts.length()];
+                    ListStringInteger = new StringAndIntegers[contacts.length()+1];
+                    TurnList=new String[contacts.length()+1];
 
                     for (int i = 0; i < contacts.length(); i++) {
 
@@ -151,16 +117,37 @@ public class VisitActivity extends AppCompatActivity {
                         String commission=c.getString("commission");
 
 
+
                         String name="تاریخ: ";
                         name +=date +"\n";
-                        name +="پزشک: ";
+                        name +="ډاکټر: ";
                         name += doctor +"\n";
-                        name +="وضعیت کمیسون: ";
+                        name +="د کمیسون حالت: ";
                         name +=commission +"\n";
-                        name +="نتیجه ویزیت";
+                        name +="د ویزیت پایله";
                         name +=result2 +"\n";
-                        name +="توضیحات: ";
+                        name +="شرحه: ";
                         name +=description +"\n";
+
+                        SharedPreferences sharedpreferences = G.activity.getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
+                        String lang = sharedpreferences.getString(G.lang ,null);
+                        if(lang.equals("fa")){
+
+                            if(i==0){
+                                TurnList[index]=name;
+
+                                ListStringInteger[index]=new StringAndIntegers(-1,"","نام پزشک","توضیحات","نتیجه ویزیت");
+                                index++;
+                            }
+                        }
+                        else if(lang.equals("ps")){
+
+                            if(i==0){
+                                TurnList[index]=name;
+                                ListStringInteger[index]=new StringAndIntegers(-1,"","د ډاکټر نوم","تفصیل","د لیدنې پایله");
+                                index++;
+                            }
+                        }
 
 
 

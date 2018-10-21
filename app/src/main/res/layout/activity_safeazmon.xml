@@ -64,7 +64,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/button"
                 android:onClick="jalil"
-                android:text=" آزمون mmpi"
+                android:text=" آزموینه mmpi"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
 
@@ -80,7 +80,7 @@
 
                 android:background="@drawable/button"
                 android:onClick="anogram"
-                android:text=" anogram آزمون"
+                android:text=" anogramآزموینه"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
 
@@ -107,7 +107,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/button"
                 android:onClick="dpress"
-                android:text="آزمون افسردگی"
+                android:text="د خپګان ټسټ"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
 
@@ -123,7 +123,7 @@
                 android:onClick="jalil1"
                 android:layout_weight="50"
 
-                android:text="جواب آزمون های گرفته شده"
+                android:text="د اخیستلشویو ټسټونو ځوابونه"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
 

@@ -57,20 +57,8 @@ public class TurnActivity extends AppCompatActivity {
 
         index=0;
 
-
-
         lv = (ListView)findViewById(R.id.list_doctor);
-
-
-
-
         new sendhttp(G.FetchlistDoctor+"?expertise="+expertise+"&part="+part+"&code="+"00000","aaa","000").execute();
-
-
-
-
-
-
 
     }
 
@@ -144,7 +132,7 @@ public class TurnActivity extends AppCompatActivity {
 
 
                     DoctorsList = new String[contacts.length()];
-                    ListStringInteger = new StringAndIntegers[contacts.length()];
+                    ListStringInteger = new StringAndIntegers[contacts.length()+1];
 
                     for (int i = 0; i < contacts.length(); i++) {
 
@@ -161,6 +149,10 @@ public class TurnActivity extends AppCompatActivity {
                             String address = c.getString("date");
 
 
+                            if(i==0){
+                                ListStringInteger[index] = new StringAndIntegers(Integer.parseInt("-1"),"ظرفیت","قیمت","تاریخ","توضیحات");
+                                index++;
+                            }
 
                             ListStringInteger[index] = new StringAndIntegers(Integer.parseInt(id),name,"500000",address,mobile);
 
@@ -173,7 +165,10 @@ public class TurnActivity extends AppCompatActivity {
                             String address = c.getString("date");
 
 
-
+                            if(i==0){
+                                ListStringInteger[index] = new StringAndIntegers(Integer.parseInt("-1"),"وړتیا","بیه","نیټه","تفصیل");
+                                index++;
+                            }
 
                             ListStringInteger[index] = new StringAndIntegers(Integer.parseInt(id),name,"50000",address,mobile);
 

@@ -1,381 +1,376 @@
 package com.example.jalil.bimarstan;
 
-import android.annotation.SuppressLint;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
-import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
-import android.widget.EditText;
+import android.annotation.SuppressLint;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @SuppressLint("SetJavaScriptEnabled")
-public class SignupActivity extends AppCompatActivity {
- public  String user;
- public  String password;
- public  String mobail;
- public  String kodmeli;
- public  EditText et;
- public  EditText et1;
- public  EditText et2;
- public  EditText et3;
- public Boolean valid=true;
+public class SignupActivity extends Activity {
+
+    private WebView webView;
 
 
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_signup);
-
-            G.activity = this;
+    ProgressDialog Pdialog;
+    String PageURL, PageTitle ;
 
 
-            et = (EditText) findViewById(R.id.editText2);
+    private static final String TAG = MmpiActivity.class.getSimpleName();
 
-            et1 = (EditText) findViewById(R.id.editText3);
+    public static final int REQUEST_CODE_LOLIPOP = 1;
+    private final static int RESULT_CODE_ICE_CREAM = 2;
 
-            et2 = (EditText) findViewById(R.id.editText5);
 
-            et3 = (EditText) findViewById(R.id.editText6);
+    private ValueCallback<Uri[]> mFilePathCallback;
+    private String mCameraPhotoPath;
+
+    private ValueCallback<Uri> mUploadMessage;
+
+    public WebView mWebView;
+
+    public String currentUrl;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+
+        G.activity=this;
+
+
+        mWebView = (WebView) findViewById(R.id.fragment_main_webview);
+
+
+
+        setUpWebViewDefaults(mWebView);
+
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+            // Restore the previous URL and history stack
+            mWebView.restoreState(savedInstanceState);
+        }
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            //The undocumented magic method override
+            //Eclipse will swear at you if you try to put @Override here
+            // For Android 3.0+
+            public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+
+                mUploadMessage = uploadMsg;
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("image/*");
+                startActivityForResult(Intent.createChooser(i, "File Chooser"),
+                        RESULT_CODE_ICE_CREAM);
+                Log.e(TAG, "11111111111111111111111111");
+
+            }
+
+            // For Android 3.0+
+            public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
+                mUploadMessage = uploadMsg;
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("*/*");
+                startActivityForResult(Intent.createChooser(i, "File Browser"),
+                        RESULT_CODE_ICE_CREAM);
+                Log.e(TAG, "2222222222222222222222222");
+
+            }
+
+            //For Android 4.1
+            public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+                mUploadMessage = uploadMsg;
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("image/*");
+                startActivityForResult(Intent.createChooser(i, "File Chooser"),
+                        RESULT_CODE_ICE_CREAM);
+                Log.e(TAG, "3333333333333333333333333");
+
+            }
+
+            //For Android5.0+
+            public boolean onShowFileChooser(
+                    WebView webView, ValueCallback<Uri[]> filePathCallback,
+                    FileChooserParams fileChooserParams) {
+                if (mFilePathCallback != null) {
+                    mFilePathCallback.onReceiveValue(null);
+                }
+                mFilePathCallback = filePathCallback;
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(G.activity.getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                        Log.e(TAG, "Unable to create Image File", ex);
+                    }
+
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(photoFile));
+                    } else {
+                        takePictureIntent = null;
+                    }
+                }
+
+                Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                contentSelectionIntent.setType("image/*");
+
+                Intent[] intentArray;
+                if (takePictureIntent != null) {
+                    intentArray = new Intent[]{takePictureIntent};
+                } else {
+                    intentArray = new Intent[0];
+                }
+
+                Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+                chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+                startActivityForResult(chooserIntent, REQUEST_CODE_LOLIPOP);
+
+                Log.e(TAG, "44444444444444444444444444");
+
+                return true;
+            }
+        });
+
+        // Load the local index.html file
+        if (mWebView.getUrl() == null) {
+
+
 
 
             SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-            String checklogin = sharedpreferences.getString(G.id_sick ,"-1");
-
-
-            if(!checklogin.equals("-1") ) {
-                Intent myIntent = new Intent(G.activity,LoginActivity.class);
-                startActivity(myIntent);
-                finish();
-            }
-
             String langauge = sharedpreferences.getString(G.lang ,"-1");
 
-            if(langauge.equals("ps") ) {
-
-
-                EditText et=(EditText) findViewById(R.id.editText2);
-                et.setHint(" نوم");
-
-                et=(EditText) findViewById(R.id.editText3);
-                et.setHint("د ناروغۍ شمیره");
-
-                et=(EditText) findViewById(R.id.editText5);
-                et.setHint("د ګرځنده شمېره");
-
-
-                et=(EditText) findViewById(R.id.editText6);
-                et.setHint("ملي کوډ");
-
-            }
-
-
-            else if (langauge.equals("-1")){
+            if (langauge.equals("-1")){
                 Intent myIntent = new Intent(G.activity,LangaugeActivity.class);
                 startActivity(myIntent);
                 finish();
             }
+            else if (langauge.equals("fa")){
+                mWebView.loadUrl(G.urlwebview+"webview/signup_sick_persian");
 
 
+            }
+            else if (langauge.equals("ps")){
+                mWebView.loadUrl(G.urlwebview+"webview/signup_sick_pashto");
 
-//            TextView txtyekan1 = (TextView) findViewById(R.id.textViewsin);
-//            Typeface yekan_font1 = Typeface.createFromAsset(getAssets(), "tt0586m_.ttf");
-//            txtyekan1.setTypeface(yekan_font1);
-            Button txtyekan2 = (Button) findViewById(R.id.button2);
-            Typeface yekan_font2 = Typeface.createFromAsset(getAssets(), "tt0586m_.ttf");
-            txtyekan2.setTypeface(yekan_font2);
-//            et = (EditText) findViewById(R.id.editText2);
-//            et1 = (EditText) findViewById(R.id.editText3);
-//            et2 = (EditText) findViewById(R.id.editText5);
-//            et3 = (EditText) findViewById(R.id.editText6);
-//            Typeface yekan_font6 = Typeface.createFromAsset(getAssets(), "BTrafcBd_0.ttf");
-//            et3.setTypeface(yekan_font6);
-//            et.setTypeface(yekan_font6);
-//            et1.setTypeface(yekan_font6);
-//            et2.setTypeface(yekan_font6);
-
-            Button Save = (Button) findViewById(R.id.button2);
-
-            // Capture button clicks
-            Save.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View arg0) {
-
-
-                     user = et.getText().toString();
-                     password = et1.getText().toString();
-                     mobail = et2.getText().toString();
-                     kodmeli = et3.getText().toString();
-
-
-
-                    if (user.isEmpty() || user.length() <3) {
-
-                        SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                        String langauge = sharedpreferences.getString(G.lang ,"-1");
-                        if(langauge.equals("ps") ) {
-
-                            et.setError("نوم باوري نه دی");
-
-                        }
-                        if(langauge.equals("fa") ) {
-
-                            et.setError("نام معتبر نمی باشد");
-
-                        }
-                        valid=false;
-
-                    } else {
-                        et.setError(null);
-                    }
-                    if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-                        SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                        String langauge = sharedpreferences.getString(G.lang ,"-1");
-                        if(langauge.equals("ps") ) {
-                            et1.setError("د ناروغ کوډ ناباوره دی");
-                        }
-                        if(langauge.equals("fa") ) {
-                            et1.setError("کد بیمار نامعتبر می باشد");
-
-                        }
-                        valid=false;
-
-                    } else {
-                        et1.setError(null);
-                    }
-
-                    if (mobail.isEmpty()) {
-
-                        SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                        String langauge = sharedpreferences.getString(G.lang ,"-1");
-                        if(langauge.equals("ps") ) {
-
-                            et2.setError("د موبایل شمېره سمه نه ده");
-
-                        }
-                        if(langauge.equals("fa") ) {
-                            et2.setError("شماره موبایل صحیح نمی باشد");
-
-
-                        }
-                        valid=false;
-
-
-                    } else {
-                        et2.setError(null);
-                    }
-                    if (kodmeli.isEmpty()) {
-
-                        SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                        String langauge = sharedpreferences.getString(G.lang ,"-1");
-                        if(langauge.equals("ps") ) {
-
-                            et3.setError("کوډ صحیح نه دی");
-
-                        }
-                        if(langauge.equals("fa") ) {
-                            et3.setError("کدملی صحیح نمی باشد");
-
-                        }
-                        valid=false;
-
-
-                    } else {
-                        et3.setError(null);
-                    }
-
-                    if (valid) {
-                        HttpPostAsyncTask task = new HttpPostAsyncTask();
-                        task.execute(G.urlserver + "signupsick");
-                    }
-                }
-            });
+            }
 
 
         }
 
 
 
+    }
 
 
 
 
-    public class HttpPostAsyncTask extends AsyncTask<String, String, String> {
 
 
-        HttpPost httppost;
-        public ProgressDialog progressDialog;
-        HttpClient httpclient;
-        List<NameValuePair> nameValuePairs;
-        ProgressDialog dialog = null;
+    public class WebViewClient extends android.webkit.WebViewClient
+    {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+            // TODO Auto-generated method stub
+            super.onPageStarted(view, url, favicon);
+
+            PageURL = view.getUrl();
 
 
 
-
+        }
 
         @Override
-        protected void onPostExecute(String result) {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-            Log.i("22222222222222222", "22222222222222222222222222" + result);
+            // TODO Auto-generated method stub
+            view.loadUrl(url);
+            return true;
+        }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+
+            // TODO Auto-generated method stub
+
+            super.onPageFinished(view, url);
+
+            //Getting WebPage URL .
+            PageURL = view.getUrl();
+
+            //Getting WebPage TITLE .
+            PageTitle = view.getTitle();
+
+
+//            if(PageTitle.equals("success")){
 //
-            progressDialog.dismiss();
-
-            String Result[]= result.split(":");
-            if(Result[0].equals("1")){
-
-
-                SharedPreferences shpref_login1 = G.activity.getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                SharedPreferences.Editor sh_edit = shpref_login1.edit();
-                 sh_edit.putString("id_sick",Result[1]);
-                sh_edit.apply();
+//                Intent c= new Intent(G.activity , MainActivity.class);
+//                startActivity(c);
+//            }
 
 
-                Intent i = new Intent(G.activity,MainActivity.class);
-                startActivity(i);
-                finish();
+            Pattern pat= Pattern.compile("[0-9]");
+            Matcher matcher = pat.matcher(PageTitle);
+
+            if (matcher.find()) {
+
+
+                SharedPreferences sharedpreferences = G.activity.getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString(G.id_sick,PageTitle);
+                editor.commit();
+
+                Intent c= new Intent(G.activity , MainActivity.class);
+                startActivity(c);
+                G.activity.finish();
+
 
             }
-
-
-
-
-            else if (Result[0].equals("0")  && Result[1].equals("0")){
-
-                SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                String langauge = sharedpreferences.getString(G.lang ,"-1");
-                if(langauge.equals("ps") ) {
-                    et.setError("نوم ناباوره دی");
-                }
-                if(langauge.equals("fa") ) {
-                    et.setError("نام نا معتبر است");
-                }
-
-            }
-
-
-            else if (Result[0].equals("0") && Result[1].equals("1")){
-
-                SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                String langauge = sharedpreferences.getString(G.lang ,"-1");
-                if(langauge.equals("ps") ) {
-                    et1.setError("د ناروغ کوډ ناباوره دی");
-                }
-                if(langauge.equals("fa") ) {
-                    et1.setError("کد بیمار نا معتبر می باشد");
-                }
-
-            }
-            else if (Result[0].equals("0") && Result[1].equals("2")){
-
-                SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                String langauge = sharedpreferences.getString(G.lang ,"-1");
-                if(langauge.equals("ps") ) {
-                    et2.setError("د موبایل شمیره ناباوره ده");
-                }
-                if(langauge.equals("fa") ) {
-                    et2.setError("شماره همراه نامعتبر می باشد");
-                }
-            }
-            else if (Result[0].equals("0") && Result[1].equals("4")){
-
-                SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-                String langauge = sharedpreferences.getString(G.lang ,"-1");
-                if(langauge.equals("ps") ) {
-                    et3.setError("ناسمه ملي کوډ");
-                }
-                if(langauge.equals("fa") ) {
-                    et3.setError("کد ملی نامعتبر می باشد");
-                }
-            }
-
-
 
         }
 
+    }
 
 
 
 
 
-        @Override
-        protected void onPreExecute() {
-
-            progressDialog = new ProgressDialog(G.activity);
-            progressDialog.setMessage("چند لحظه صبر کنید...."); // Setting Message
-            progressDialog.setTitle("در حال تایید اطلاعات..."); // Setting Title
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-            progressDialog.show(); // Display Progress Dialog
 
 
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        Thread.sleep(20000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+
+    /**
+     * More info this method can be found at
+     * http://developer.android.com/training/camera/photobasics.html
+     *
+     * @return
+     * @throws IOException
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        return imageFile;
+    }
+
+    /**
+     * Convenience method to set some generic defaults for a
+     * given WebView
+     *
+     * @param webView
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setUpWebViewDefaults(WebView webView) {
+        WebSettings settings = webView.getSettings();
+
+        // Enable Javascript
+        settings.setJavaScriptEnabled(true);
+
+        // Use WideViewport and Zoom out if there is no viewport defined
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+
+        // Enable pinch to zoom without the zoom buttons
+        settings.setBuiltInZoomControls(true);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+            // Hide the zoom controls for HONEYCOMB+
+            settings.setDisplayZoomControls(false);
+        }
+
+        // Enable remote debugging via chrome://inspect
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
+        // We set the WebViewClient to ensure links are consumed by the WebView rather
+        // than passed to a browser if it can
+        mWebView.setWebViewClient(new WebViewClient());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case RESULT_CODE_ICE_CREAM:
+                Uri uri = null;
+                if (data != null) {
+                    uri = data.getData();
+                }
+                mUploadMessage.onReceiveValue(uri);
+                mUploadMessage = null;
+                break;
+            case REQUEST_CODE_LOLIPOP:
+                Uri[] results = null;
+                // Check that the response is a good one
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data == null) {
+                        // If there is not data, then we may have taken a photo
+                        if (mCameraPhotoPath != null) {
+                            results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                        }
+                    } else {
+                        String dataString = data.getDataString();
+                        if (dataString != null) {
+                            results = new Uri[]{Uri.parse(dataString)};
+                        }
                     }
-                    progressDialog.dismiss();
                 }
-            }).start();
 
-        }
-
-
-
-        // This is a function that we are overriding from AsyncTask. It takes Strings as parameters because that is what we defined for the parameters of our async task
-        @Override
-        protected String doInBackground(String... params) {
-
-            try {
-
-
-                Log.i("urluuuuuuuuuuuuuuu", "doInBackground: "+params[0]);
-
-                httpclient=new DefaultHttpClient();
-                httppost= new HttpPost(params[0]); // make sure the url is correct.
-//add your data
-
-                Log.i("uuuuuu", "urluuuuuuuuuuuu "+params[0]);
-                nameValuePairs = new ArrayList<NameValuePair>(2);
-// Always use the same variable name for posting i.e the android side variable name and php side variable name should be similar,
-
-                nameValuePairs.add(new BasicNameValuePair("name", user.trim()));
-                nameValuePairs.add(new BasicNameValuePair("code", password.trim()));
-                nameValuePairs.add(new BasicNameValuePair("mobile", mobail.trim()));
-                nameValuePairs.add(new BasicNameValuePair("national_number", kodmeli.trim()));
-
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"utf-8"));
-
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                String response = httpclient.execute(httppost, responseHandler);
-                System.out.println("Response : " + response);
-                return response;
-
-
-
-            } catch (Exception e) {
-                Log.i("error rrrrrrr", e.toString());
-            }
-
-            return "0";
+                mFilePathCallback.onReceiveValue(results);
+                mFilePathCallback = null;
+                break;
         }
     }
-            }
+
+}
+

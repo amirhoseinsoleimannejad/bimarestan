@@ -138,7 +138,7 @@ public class TurnsearchActivity extends AppCompatActivity {
 
 
             TextView city=(TextView) findViewById(R.id.textView5);
-            city.setText("ښارونو");
+            city.setText("ښار");
 
             TextView ostan=(TextView) findViewById(R.id.textView6);
             ostan.setText("ولایت");
@@ -153,7 +153,7 @@ public class TurnsearchActivity extends AppCompatActivity {
 
 
             TextView expertise=(TextView) findViewById(R.id.textView9);
-            expertise.setText("ځانتیا");
+            expertise.setText("تخصص");
 
 
 
@@ -191,6 +191,9 @@ public class TurnsearchActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(G.activity,"لطفا تخصص را انتخاب کنید باتشکر",
+                            Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(G.activity,"په مهربانۍ سره تخصص مو ټاکئ",
                             Toast.LENGTH_SHORT).show();
                 }
 

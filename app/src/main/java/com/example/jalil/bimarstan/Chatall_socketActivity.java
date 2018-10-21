@@ -1,14 +1,14 @@
-
 package com.example.jalil.bimarstan;
-
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import com.example.jalil.bimarstan.otherclass.MessageAdapter;
 import com.example.jalil.bimarstan.otherclass.message;
+import com.example.jalil.bimarstan.service.MessageService;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -39,20 +40,16 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class ChatallActivity extends AppCompatActivity {
-
+public class Chatall_socketActivity extends AppCompatActivity {
 
 
-
-    private ListView listView;
+    private  ListView listView;
     private static Boolean MainactivityIsStart=false;
     private static List<message> listmessage;
     private static MessageAdapter messageAdapter;
     private static final int CAMERA_PIC_REQUEST = 2500;
     private String text="";
     private Bitmap bitmap;
-    private Boolean start=true;
 
 
     @Override
@@ -60,7 +57,7 @@ public class ChatallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatall);
 
-
+        startService(new Intent(getBaseContext(), MessageService.class));
 
         G.activity=this;
         MainactivityIsStart=true;
@@ -68,12 +65,6 @@ public class ChatallActivity extends AppCompatActivity {
 
         listView=(ListView) findViewById(R.id.list_message);
         listmessage = new ArrayList<message>();
-
-
-        messageAdapter = new MessageAdapter(G.activity,listmessage);
-        listView.setAdapter(messageAdapter);
-
-
 
 
 
@@ -88,8 +79,8 @@ public class ChatallActivity extends AppCompatActivity {
                 message m=new message(text,"","",true,"",false);
                 listmessage.add(m);
 
-                messageAdapter.notifyDataSetChanged();
-
+                messageAdapter = new MessageAdapter(G.activity,listmessage);
+                listView.setAdapter(messageAdapter);
 
                 HttpPostAsyncTask task = new HttpPostAsyncTask();
                 task.execute(G.urlserver + "insert_message");
@@ -117,35 +108,6 @@ public class ChatallActivity extends AppCompatActivity {
 
         HttpPostAsyncTask task = new HttpPostAsyncTask();
         task.execute(G.urlserver + "fetch_message_all");
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-
-                while (start){
-
-                    try {
-
-
-                        HttpPostAsyncTask task = new HttpPostAsyncTask();
-                        task.execute(G.urlserver + "fetch_message_all");
-
-                        Thread.sleep(10000);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-
-
-            }
-        }).start();
-
-
 
     }
 
@@ -176,18 +138,11 @@ public class ChatallActivity extends AppCompatActivity {
 
 
 
-    public static void getMessage(String id, String message){
+    public static void getMessage(String id,String message){
         message m=new message(message,"","",false,"",false);
         listmessage.add(m);
         messageAdapter.notifyDataSetChanged();
     }
-
-
-
-
-
-
-
 
 
 
@@ -206,7 +161,7 @@ public class ChatallActivity extends AppCompatActivity {
             Log.i("22222222222222222", "22222222222222222222222222" + result);
 
 
-            listmessage.clear();
+//            listmessage.clear();
 
 
             message m_array[];
@@ -243,7 +198,7 @@ public class ChatallActivity extends AppCompatActivity {
 
                     SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
 
-                    if(id_user.equals(sharedpreferences.getString(G.id_sick ,"0"))){
+                    if(id_user.equals(sharedpreferences.getString(G.id_sick ,"35"))){
                         message m=new message(text,date,time,true,image,imageOtextB);
                         m_array[k]=m;
                     }
@@ -259,9 +214,8 @@ public class ChatallActivity extends AppCompatActivity {
                 }
 
 
-
-                messageAdapter.notifyDataSetChanged();
-
+                messageAdapter = new MessageAdapter(G.activity,listmessage);
+                listView.setAdapter(messageAdapter);
 
             }
             catch (Exception e){
@@ -304,9 +258,9 @@ public class ChatallActivity extends AppCompatActivity {
 
                 SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
 
-                nameValuePairs.add(new BasicNameValuePair("id_user", sharedpreferences.getString(G.id_sick ,"0").trim()));
+                nameValuePairs.add(new BasicNameValuePair("id_user", sharedpreferences.getString(G.id_sick ,"35").trim()));
 
-                nameValuePairs.add(new BasicNameValuePair("type","2".trim()));
+                nameValuePairs.add(new BasicNameValuePair("type","1".trim()));
 
 
 //                Log.i("dddddddddd", "doInBackground: "+shpref.getString("id_user","-1").trim());
@@ -340,8 +294,7 @@ public class ChatallActivity extends AppCompatActivity {
 
 
 
-    private class uploadImage extends AsyncTask<Void,Void,String> {
-
+    private class uploadImage extends AsyncTask<Void,Void,String>{
 
 
         protected void onPreExecute(){
@@ -351,12 +304,10 @@ public class ChatallActivity extends AppCompatActivity {
             String text="";
 
             try{
-                SharedPreferences sharedpreferences = getSharedPreferences(G.MyPREFERENCES, Context.MODE_PRIVATE);
-
                 // Create HttpClitent instance
                 HttpClient httpClient = new DefaultHttpClient();
                 // Create HttpPost instance with specifying php file on server to handle file uploading
-                HttpPost httpPostRequest = new HttpPost(G.urlserver+"chat_upload_doctor?id_user="+sharedpreferences.getString(G.id_sick ,"0").trim());
+                HttpPost httpPostRequest = new HttpPost(G.urlserver+"chat_upload_sick");
 
 
                 // Read image file and convert it to byte array
@@ -377,7 +328,6 @@ public class ChatallActivity extends AppCompatActivity {
                 multipartEntity.addPart("img_file", inputStreamBody);
                 // Set MultipartEntityBuilder instance to HttpPost
                 httpPostRequest.setEntity(multipartEntity.build());
-
 
                 // Start uploading the image and get the result from remote server
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();

@@ -14,12 +14,15 @@ public class G extends Application {
     public static Activity activity;
 
 
+    public static String urlserver="http://darmalena.com/android/";
+    public static String ServerImg="http://darmalena.com/uploads/";
+    public static String urlwebview="http://darmalena.com/";
+    public static String Service="ws://192.168.1.9:9000";
 
-
-    public static String urlserver="http://192.168.1.8/android/";
-    public static String ServerImg="http://192.168.1.8/uploads/";
-    public static String urlwebview="http://192.168.1.8/";
-    public static String Service="ws://192.168.42.108:9000";
+//    public static String urlserver="http://192.168.1.9/android/";
+//    public static String ServerImg="http://192.168.1.9/uploads/";
+//    public static String urlwebview="http://192.168.1.9/";
+//    public static String Service="ws://192.168.1.9:9000";
 
 
     public static final String MyPREFERENCES = "MyPrefs";

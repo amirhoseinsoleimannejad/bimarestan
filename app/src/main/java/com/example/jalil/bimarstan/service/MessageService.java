@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 
-import com.example.jalil.bimarstan.ChatallActivity;
+import com.example.jalil.bimarstan.Chatall_socketActivity;
 import com.example.jalil.bimarstan.G;
 import com.example.jalil.bimarstan.R;
 
@@ -121,8 +121,8 @@ public class MessageService extends Service {
 
 
 
-                if(ChatallActivity.MainIsStart()){
-                    ChatallActivity.getMessage(message,message);
+                if(Chatall_socketActivity.MainIsStart()){
+                    Chatall_socketActivity.getMessage(message,message);
                 }
                 else{
                     addNotification_message();
@@ -183,7 +183,7 @@ public class MessageService extends Service {
                         .setContentText("پیامی از طرف درمانگر برای شما ارسال شده");
 
 
-        Intent notificationIntent = new Intent(this, ChatallActivity.class);
+        Intent notificationIntent = new Intent(this, Chatall_socketActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);

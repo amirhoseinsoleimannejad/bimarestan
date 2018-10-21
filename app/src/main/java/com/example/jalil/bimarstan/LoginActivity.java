@@ -229,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             else{
                     Toast.makeText(G.activity, "مشخصات وارد شده اشتباه است.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(G.activity, "وارد شوي معلومات اشتباه دي", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -242,6 +243,10 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog = ProgressDialog.show(G.activity,
                         "لطفاً منتظر بمانید",
                         "با تشکر");
+
+                progressDialog = ProgressDialog.show(G.activity,
+                        "لطفا انتظار وباسئ",
+                        "په درناوي");
             }
 
             @Override

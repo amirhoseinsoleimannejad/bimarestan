@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatallActivity"
+            android:name=".Chatall_socketActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".VisitActivity"
@@ -48,7 +48,7 @@
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".Signup2Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".forget"
@@ -83,7 +83,7 @@
         <activity android:name=".DepressActivity" />
         <activity android:name=".AnogramActivity" />
         <activity android:name=".VisitorActivity" />
-        <activity android:name=".Detail_darogeramActivity"></activity>
+        <activity android:name=".Detail_darogeramActivity" />
 
         <receiver
             android:name=".service.autostart"
@@ -112,8 +112,10 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".DragestorActivity"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".Dragestor_listActivity" />
+        <activity android:name=".List_doctorsActivity" />
+        <activity android:name=".SignupActivity"></activity>
     </application>
 
 </manifest>

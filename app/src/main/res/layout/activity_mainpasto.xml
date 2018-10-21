@@ -184,7 +184,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:onClick="zaman"
+                android:onClick="turn"
                 app:srcCompat="@drawable/l_3" />
                 </LinearLayout>
 
@@ -240,7 +240,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="بدله واخلئ"
+                android:text="نوبت اخیستنه"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
                 </LinearLayout>
@@ -257,7 +257,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="لاسوندونه وګورئ"
+                android:text="اسناد مو وګورئ"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
                 </LinearLayout>
@@ -427,7 +427,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="د اوون بازار"
+                android:text="بازار مونونکي"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
                 </LinearLayout>
@@ -523,7 +523,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:onClick="azmonja"
+                android:onClick="market"
                 app:srcCompat="@drawable/l_9" />
                 </LinearLayout>
 
@@ -555,7 +555,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
-                android:onClick="khadamat"
+                android:onClick="doctors"
                 app:srcCompat="@drawable/l_5" />
                 </LinearLayout>
 
@@ -579,7 +579,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="د ځواب ځواب"
+                android:text="مارکټونه"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
                 </LinearLayout>
@@ -613,7 +613,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="خدمتونه"
+                android:text="مطبونه"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
                 </LinearLayout>
@@ -734,7 +734,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="بدله واخلئ"
+                android:text="د نوبت اخیستنه"
                 android:textColor="#444A56"
                 android:textSize="12sp" />
 
@@ -753,7 +753,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="وتنه"
+                            android:text="بهر ته وتنه"
                             android:textColor="#444A56"
                             android:textSize="12sp" />
                         

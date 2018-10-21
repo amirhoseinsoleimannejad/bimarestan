@@ -30,7 +30,7 @@ public class AzmoonActivity extends AppCompatActivity {
             mmpi_button.setText("د Mmpi ازموینه");
 
             mmpi_button=(Button) findViewById(R.id.anogram);
-            mmpi_button.setText("د anogram ازموینه");
+            mmpi_button.setText("د enogram ازموینه");
 
             mmpi_button=(Button) findViewById(R.id.dpress);
             mmpi_button.setText("د dpress ازموینه");

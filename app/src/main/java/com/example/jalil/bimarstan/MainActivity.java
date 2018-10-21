@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         },1000);
     }
 
-    public void zaman(View view) {
+    public void turn(View view) {
         YoYo.with(Techniques.Shake)
                 .duration(1000)
                 .repeat(1)
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent jalil=new Intent(G.activity,ChatallActivity.class);
+                Intent jalil=new Intent(G.activity,Chatall_socketActivity.class);
                 startActivity(jalil);
 
             }
@@ -268,13 +268,17 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
 
                 Intent jalil=new Intent(G.activity,Dragestor_listActivity.class);
+                jalil.putExtra("type","dragestor");
                 startActivity(jalil);
 
             }
         },1000);
     }
 
-    public void azmonja(View view) {
+
+
+
+    public void market(View view) {
         YoYo.with(Techniques.Shake)
                 .duration(1000)
                 .repeat(1)
@@ -286,7 +290,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent jalil=new Intent(G.activity,AzmoonActivity.class);
+                Intent jalil=new Intent(G.activity,Dragestor_listActivity.class);
+                jalil.putExtra("type","market");
+
                 startActivity(jalil);
 
             }
@@ -312,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         },1000);
     }
 
-    public void khadamat(View view) {
+    public void doctors(View view) {
         YoYo.with(Techniques.Shake)
                 .duration(1000)
                 .repeat(1)
@@ -324,7 +330,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent jalil=new Intent(G.activity,AzmoonActivity.class);
+                Intent jalil=new Intent(G.activity,Dragestor_listActivity.class);
+                jalil.putExtra("type","doctors");
                 startActivity(jalil);
 
             }
