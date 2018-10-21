@@ -36,7 +36,6 @@ public class DepressActivity extends Activity {
 
     private WebView webView;
 
-
     ProgressDialog Pdialog;
     String PageURL, PageTitle ;
 
